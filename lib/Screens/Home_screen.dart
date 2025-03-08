@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:realturn_app/pages/Profile.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/foundation.dart' show kIsWeb; // Add this import
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -12,22 +13,30 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // Function to launch WhatsApp
   Future<void> _launchWhatsApp() async {
-    final url = Uri.parse('whatsapp://send?phone=+256740598271&text=Welcome to RealTun Tennis Uganda');
+    const String phone = '+256740598271';
+    const String message = 'Welcome to RealTurn Tennis Uganda';
+    Uri url;
 
-    // Check if the URL can be launched
-    if (await canLaunch(url.toString())) {
-      try {
-        await launch(url.toString());
-      } catch (e) {
-        print("Error launching WhatsApp: $e");
+    if (kIsWeb) {
+      // Web uses wa.me URL
+      url = Uri.parse('https://wa.me/$phone?text=${Uri.encodeComponent(message)}');
+    } else {
+      // Mobile uses whatsapp:// scheme
+      url = Uri.parse('whatsapp://send?phone=$phone&text=${Uri.encodeComponent(message)}');
+    }
+
+    try {
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url, mode: LaunchMode.externalApplication);
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Could not open WhatsApp')),
+          SnackBar(content: Text('Could not launch WhatsApp')),
         );
       }
-    } else {
-      print("Could not launch URL");
+    } catch (e) {
+      print("Error launching WhatsApp: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Could not launch WhatsApp')),
+        SnackBar(content: Text('Failed to open WhatsApp: $e')),
       );
     }
   }
@@ -40,10 +49,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Your existing build method remains unchanged
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 27, 120, 243),
-
-      /// AppBar
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -73,9 +81,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.notifications, color: Colors.black), // Notification icon
+            icon: Icon(Icons.notifications, color: Colors.black),
             onPressed: () {
-              // Handle notification icon tap
               print("Notification Icon Clicked");
             },
           ),
@@ -91,14 +98,12 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => EditProfile ())
+                MaterialPageRoute(builder: (context) => EditProfile()),
               );
             },
           ),
         ],
       ),
-
-      /// Navigation Drawer (Menu)
       drawer: Drawer(
         child: Column(
           children: [
@@ -187,8 +192,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-
-      /// Background Image
       body: Stack(
         children: [
           Positioned.fill(
@@ -233,7 +236,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         backgroundColor: Colors.white,
                         minimumSize: Size(100, 50),
                       ),
-                      child: Text('ABOUT US', style: TextStyle(color: const Color.fromARGB(255, 10, 10, 10),fontWeight: FontWeight.bold,)),
+                      child: Text('ABOUT US', style: TextStyle(color: const Color.fromARGB(255, 10, 10, 10), fontWeight: FontWeight.bold)),
                     ),
                     SizedBox(height: 10),
                     ElevatedButton(
@@ -245,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         backgroundColor: Colors.white,
                         minimumSize: Size(100, 50),
                       ),
-                      child: Text('DONATE NOW', style: TextStyle(color: const Color.fromARGB(255, 12, 12, 12),fontWeight: FontWeight.bold,)),
+                      child: Text('DONATE NOW', style: TextStyle(color: const Color.fromARGB(255, 12, 12, 12), fontWeight: FontWeight.bold)),
                     ),
                     Padding(
                       padding: EdgeInsets.only(bottom: 20, right: 20),
@@ -286,8 +289,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-
-      /// Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
         selectedItemColor: Colors.blue,
