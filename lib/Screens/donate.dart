@@ -3,7 +3,10 @@ import 'package:realturn_app/Screens/Donating.dart';
 import 'package:realturn_app/Screens/mobile_money.dart';
 import 'package:realturn_app/Screens/options.dart';
 
+
 class DonationScreen extends StatelessWidget {
+  const DonationScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,7 +15,7 @@ class DonationScreen extends StatelessWidget {
         backgroundColor: const Color.fromARGB(255, 4, 104, 253),
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             Navigator.push(
                   context,
@@ -41,7 +44,7 @@ class DonationScreen extends StatelessWidget {
                             builder: (context) => MobileMoneyScreen ()));
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     DonationButton(
                       text: "Donate with Debit or Credit Card",
                       borderColor: Colors.blue,
@@ -53,7 +56,7 @@ class DonationScreen extends StatelessWidget {
                             builder: (context) => DonationScreenOptions()));
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     DonationButton(
                       text: "Donate with PayPal",
                       borderColor: Colors.black,
@@ -70,8 +73,8 @@ class DonationScreen extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 16.0),
+          const Padding(
+            padding: EdgeInsets.only(bottom: 16.0),
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Text(
@@ -92,7 +95,7 @@ class DonationButton extends StatelessWidget {
   final Color textColor;
   final VoidCallback onTap;
 
-  DonationButton({
+  const DonationButton({super.key, 
     required this.text,
     required this.borderColor,
     required this.textColor,
@@ -109,7 +112,7 @@ class DonationButton extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(color: borderColor, width: 2),
           borderRadius: BorderRadius.circular(30),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Colors.black26,
               spreadRadius: 1,

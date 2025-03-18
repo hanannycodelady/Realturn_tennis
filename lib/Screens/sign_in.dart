@@ -4,6 +4,7 @@ import 'Home_screen.dart';
 import 'sign_up.dart';
 import '../services/auth_service.dart';
 
+
 class SignInScreen extends StatefulWidget {
   final String? email;
   final String? password;
@@ -37,7 +38,7 @@ class _SignInScreenState extends State<SignInScreen> {
     }
     if (widget.password != null) {
       _passwordController.text = widget.password!;
-      Future.delayed(Duration(milliseconds: 500), () {
+      Future.delayed(const Duration(milliseconds: 500), () {
         if (mounted) {
           _handleSignIn();
         }
@@ -94,7 +95,7 @@ class _SignInScreenState extends State<SignInScreen> {
               SnackBar(
                 content: Text(response['message'] ?? 'Login failed'),
                 backgroundColor: Colors.red,
-                duration: Duration(seconds: 3),
+                duration: const Duration(seconds: 3),
               ),
             );
           }
@@ -125,7 +126,7 @@ class _SignInScreenState extends State<SignInScreen> {
       padding: const EdgeInsets.only(bottom: 10.0),
       child: Container(
         decoration: BoxDecoration(
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Colors.black26,
               blurRadius: 5,
@@ -143,16 +144,16 @@ class _SignInScreenState extends State<SignInScreen> {
             filled: true,
             fillColor: Colors.white,
             hintText: hintText,
-            hintStyle: TextStyle(
+            hintStyle: const TextStyle(
               fontWeight: FontWeight.bold,
-              color: const Color.fromARGB(255, 10, 10, 10),
+              color: Color.fromARGB(255, 10, 10, 10),
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide.none,
             ),
-            contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-            labelStyle: TextStyle(color: Colors.blue),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            labelStyle: const TextStyle(color: Colors.blue),
             suffixIcon: isPassword
                 ? IconButton(
                     icon: Icon(
@@ -178,7 +179,7 @@ class _SignInScreenState extends State<SignInScreen> {
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -209,19 +210,19 @@ class _SignInScreenState extends State<SignInScreen> {
                     Align(
                       alignment: Alignment.topLeft,
                       child: IconButton(
-                        icon: Icon(Icons.arrow_back, color: Colors.white),
+                        icon: const Icon(Icons.arrow_back, color: Colors.white),
                         onPressed: () {
                           Navigator.pop(context);
                         },
                       ),
                     ),
-                    SizedBox(height: 60),
+                    const SizedBox(height: 60),
                     Container(
-                      padding: EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.3),
                         borderRadius: BorderRadius.circular(15),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             color: Colors.black26,
                             blurRadius: 10,
@@ -234,7 +235,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           _buildTextField(
                             "Email address",
                             controller: _emailController,
@@ -257,35 +258,35 @@ class _SignInScreenState extends State<SignInScreen> {
                             alignment: Alignment.centerRight,
                             child: TextButton(
                               onPressed: () {},
-                              child: Text("Forgot password?", style: TextStyle(color: Colors.black)),
+                              child: const Text("Forgot password?", style: TextStyle(color: Colors.black)),
                             ),
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           _isLoading
-                              ? CircularProgressIndicator(color: Colors.white)
+                              ? const CircularProgressIndicator(color: Colors.white)
                               : ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.blue.shade800,
                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                    padding: EdgeInsets.symmetric(vertical: 15),
-                                    minimumSize: Size(double.infinity, 50),
+                                    padding: const EdgeInsets.symmetric(vertical: 15),
+                                    minimumSize: const Size(double.infinity, 50),
                                   ),
                                   onPressed: _handleSignIn,
-                                  child: Text(
+                                  child: const Text(
                                     "Login",
                                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                                   ),
                                 ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           TextButton(
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => SignUpScreen()),
+                                MaterialPageRoute(builder: (context) => const SignUpScreen()),
                               );
                             },
                             child: RichText(
-                              text: TextSpan(
+                              text: const TextSpan(
                                 style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
                                 children: [
                                   TextSpan(text: "Don't have an account? "),

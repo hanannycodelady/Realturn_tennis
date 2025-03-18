@@ -24,6 +24,8 @@ class MyHttpOverrides extends HttpOverrides {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,8 +36,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => SplashScreen(),
         '/AuthScreen': (context) => AuthScreen(),
-        '/SignUpScreen': (context) => SignUpScreen(),
-        '/SignInScreen': (context) => SignInScreen(),
+        '/SignUpScreen': (context) => const SignUpScreen(),
+        '/SignInScreen': (context) => const SignInScreen(),
         '/HomeScreen': (context) => HomeScreen(),
         '/EditProfile': (context) => EditProfile(),
         '/NotificationScreen': (context) => NotificationScreen(),

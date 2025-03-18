@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:realturn_app/Screens/confirmation1.dart';
+
 
 class MobileMoneyScreen extends StatelessWidget {
+  const MobileMoneyScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,7 +18,7 @@ class MobileMoneyScreen extends StatelessWidget {
             right: 0,
             child: Container(
               height: 300,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.blue,
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(20),
@@ -24,24 +28,24 @@ class MobileMoneyScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 50), 
+                  const SizedBox(height: 50), 
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: IconButton(
-                      icon: Icon(Icons.arrow_back, color: Colors.black, size: 30),
+                      icon: const Icon(Icons.arrow_back, color: Colors.black, size: 30),
                       onPressed: () {
                         Navigator.pop(context);
                       },
                     ),
                   ),
-                  SizedBox(height: 10), 
-                  Center(
+                  const SizedBox(height: 10), 
+                  const Center(
                     child: Text(
                       "Donate with mobile money",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
-                        color: const Color.fromARGB(255, 31, 30, 30), 
+                        color: Color.fromARGB(255, 31, 30, 30), 
                       ),
                     ),
                   ),
@@ -53,16 +57,16 @@ class MobileMoneyScreen extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(height: 300), 
+              const SizedBox(height: 300), 
               Expanded(
                 child: Center(
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.9,
-                    padding: EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                           color: Colors.black87,
                           spreadRadius: 2,
@@ -75,22 +79,25 @@ class MobileMoneyScreen extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         _buildTextField("Enter amount"),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         _buildTextField("Enter your phone number"),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         _buildTextField("Enter your email"),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () { Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => VerificationCodeScreen()),
+              );},
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
                             padding:
-                                EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+                                const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
                           ),
-                          child: Text(
+                          child: const Text(
                             "Donate",
                             style: TextStyle(color: Colors.white),
                           ),
@@ -100,14 +107,14 @@ class MobileMoneyScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
+              const Padding(
+                padding: EdgeInsets.only(bottom: 16.0),
                 child: Text(
                   "© 2024 Real Tennis Projects",
                   style: TextStyle(
                     fontSize: 12,
                     fontStyle: FontStyle.italic,
-                    color: const Color.fromARGB(255, 14, 13, 13), 
+                    color: Color.fromARGB(255, 14, 13, 13), 
                   ),
                 ),
               ),
@@ -120,7 +127,7 @@ class MobileMoneyScreen extends StatelessWidget {
 
   Widget _buildTextField(String hintText) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         boxShadow: [
           BoxShadow(
             color: Colors.black45,
@@ -131,25 +138,25 @@ class MobileMoneyScreen extends StatelessWidget {
         ],
       ),
       child: TextField(
-        style: TextStyle(color: Colors.black),
+        style: const TextStyle(color: Colors.black),
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white,
           hintText: hintText,
-          hintStyle: TextStyle(color: Colors.black87),
+          hintStyle: const TextStyle(color: Colors.black87),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Colors.black),
+            borderSide: const BorderSide(color: Colors.black),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Colors.black),
+            borderSide: const BorderSide(color: Colors.black),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Colors.blue),
+            borderSide: const BorderSide(color: Colors.blue),
           ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         ),
       ),
     );

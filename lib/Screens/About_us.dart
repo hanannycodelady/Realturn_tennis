@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:realturn_app/Screens/home_screen.dart';
 
+
 class AboutUsScreen extends StatelessWidget {
   final bool fromMenu;
-  AboutUsScreen({required this.fromMenu});
+  const AboutUsScreen({super.key, required this.fromMenu});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ABOUT US', style: TextStyle(color: const Color.fromARGB(255, 10, 10, 10)),textAlign: TextAlign.center,),
+        title: const Text('ABOUT US', style: TextStyle(color: Color.fromARGB(255, 10, 10, 10)),textAlign: TextAlign.center,),
         backgroundColor: Colors.blue,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: const Color.fromARGB(255, 12, 12, 12)),
+          icon: const Icon(Icons.arrow_back, color: Color.fromARGB(255, 12, 12, 12)),
           onPressed: () {
             if (fromMenu) {
               Navigator.pop(context);
@@ -26,7 +27,7 @@ class AboutUsScreen extends StatelessWidget {
           },
         ),
       ),
-      body: Padding(
+      body: const Padding(
         padding: EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Center(
@@ -41,7 +42,7 @@ class AboutUsScreen extends StatelessWidget {
                   'athletes, particularly in rural areas where access to sports infrastructure and opportunities is limited. Through strategic partnerships, '
                   'advocacy, and outreach programs, we aim to inspire a love for the game, promote healthy lifestyles, and empower the next generation of '
                   'tennis players by providing access to training, facilities, and support.',
-                  style: TextStyle(fontSize: 16,color: const Color.fromARGB(221, 20, 20, 20)),
+                  style: TextStyle(fontSize: 16,color: Color.fromARGB(221, 20, 20, 20)),
                   textAlign: TextAlign.left,
                 ),
                 SizedBox(height: 20),
@@ -57,7 +58,7 @@ class AboutUsScreen extends StatelessWidget {
                 Text(
                   'To promote and inspire the growth of lawn tennis, while creating career opportunities for the youth through training, '
                   'advocacy, sponsorship, and by establishing accessible tennis facilities at the community level in different districts in Uganda.',
-                  style: TextStyle(fontSize: 16,color: const Color.fromARGB(221, 20, 20, 20)),
+                  style: TextStyle(fontSize: 16,color: Color.fromARGB(221, 20, 20, 20)),
                   textAlign: TextAlign.left,
                 ),
                 SizedBox(height: 20),
@@ -72,10 +73,10 @@ class AboutUsScreen extends StatelessWidget {
                 SizedBox(height: 10),
                 Text(
                   'Our goal is to have a presence in 25 districts and 30 colleges by 2030, with operations officially starting in January 2025.',
-                  style: TextStyle(fontSize: 16,color: const Color.fromARGB(221, 20, 20, 20)),
+                  style: TextStyle(fontSize: 16,color: Color.fromARGB(221, 20, 20, 20)),
                   textAlign: TextAlign.left,
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 10),
                 Text(
                   'OUR AIM:',
                   style: TextStyle(
@@ -87,7 +88,7 @@ class AboutUsScreen extends StatelessWidget {
                 SizedBox(height: 10),
                 Text(
                   'We strive to:',
-                  style: TextStyle(fontSize: 16, color: const Color.fromARGB(221, 20, 20, 20)),
+                  style: TextStyle(fontSize: 16, color: Color.fromARGB(221, 20, 20, 20)),
                   textAlign: TextAlign.left,
                 ),
                 SizedBox(height: 5),

@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:realturn_app/Screens/Home_screen.dart';
 
 class ContactUsScreen extends StatelessWidget {
+  const ContactUsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // Navigate to the previous screen (Menu)
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+              );
           },
         ),
-        title: Text('Contact', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Contact', style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Colors.black,
         centerTitle: true,
       ),
@@ -27,7 +33,7 @@ class ContactUsScreen extends StatelessWidget {
                   height: 250,
                   fit: BoxFit.cover,
                 ),
-                Positioned(
+                const Positioned(
                   top: 30,
                   left: 20,
                   child: Column(
@@ -38,7 +44,7 @@ class ContactUsScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: const Color.fromARGB(255, 10, 10, 10),
+                          color: Color.fromARGB(255, 10, 10, 10),
                         ),
                       ),
                       SizedBox(height: 10),
@@ -46,7 +52,7 @@ class ContactUsScreen extends StatelessWidget {
                         'www.youtube.com/@realturnprojects9651',
                         style: TextStyle(
                           fontSize: 16,
-                          color: const Color.fromARGB(255, 12, 12, 12),
+                          color: Color.fromARGB(255, 12, 12, 12),
                         ),
                       ),
                       SizedBox(height: 10),
@@ -54,7 +60,7 @@ class ContactUsScreen extends StatelessWidget {
                         'TEL: +256 756 873677',
                         style: TextStyle(
                           fontSize: 16,
-                          color: const Color.fromARGB(255, 12, 12, 12),
+                          color: Color.fromARGB(255, 12, 12, 12),
                           fontWeight: FontWeight.bold,
                         
                         ),
@@ -64,7 +70,7 @@ class ContactUsScreen extends StatelessWidget {
                         'Please fill in the form below if you have any questions.',
                         style: TextStyle(
                           fontSize: 14,
-                          color: const Color.fromARGB(255, 7, 7, 7),
+                          color: Color.fromARGB(255, 7, 7, 7),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -78,20 +84,20 @@ class ContactUsScreen extends StatelessWidget {
               child: Column(
                 children: [
                   _buildTextField('Name'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   _buildTextField('Email'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   _buildTextField('Subject'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   _buildTextField('Message', maxLines: 5),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
-                      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Submit',
                       style: TextStyle(color: Colors.white, fontSize: 16),
                     ),

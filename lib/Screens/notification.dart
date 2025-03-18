@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:realturn_app/Screens/home_screen.dart';
 
+
 class NotificationScreen extends StatelessWidget {
   final List<Map<String, dynamic>> notifications = [
     {
@@ -19,15 +20,17 @@ class NotificationScreen extends StatelessWidget {
     },
   ];
 
+   NotificationScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notification', style: TextStyle(color: Colors.black)),
+        title: const Text('Notification', style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             Navigator.pushReplacement(
               context,
@@ -43,7 +46,7 @@ class NotificationScreen extends StatelessWidget {
 
 class NotificationList extends StatelessWidget {
   final List<Map<String, dynamic>> notifications;
-  NotificationList({required this.notifications});
+  const NotificationList({super.key, required this.notifications});
 
   @override
   Widget build(BuildContext context) {
@@ -58,12 +61,12 @@ class NotificationList extends StatelessWidget {
                 BoxShadow(
                   color: Colors.black.withOpacity(0.5),
                   blurRadius: 5,
-                  offset: Offset(-3, 0),
+                  offset: const Offset(-3, 0),
                 ),
               ],
             ),
             child: CircleAvatar(
-              backgroundImage: AssetImage('assets/logo.png'), 
+              backgroundImage: const AssetImage('assets/logo.png'), 
               backgroundColor: notifications[index]['opened'] ? Colors.grey : Colors.red,
             ),
           ),
@@ -78,7 +81,7 @@ class NotificationList extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(notifications[index]['description']!),
-              Text('${notifications[index]['day']} - ${notifications[index]['time']}', style: TextStyle(color: Colors.grey)),
+              Text('${notifications[index]['day']} - ${notifications[index]['time']}', style: const TextStyle(color: Colors.grey)),
             ],
           ),
         );

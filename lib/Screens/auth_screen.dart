@@ -4,7 +4,10 @@ import 'package:realturn_app/Screens/sign_in.dart';
 import 'package:realturn_app/Screens/home_screen.dart';
 import 'package:realturn_app/Screens/splash_screen.dart';     
 
+
 class AuthScreen extends StatefulWidget {
+  const AuthScreen({super.key});
+
   @override
   _AuthScreenState createState() => _AuthScreenState();
 }
@@ -15,14 +18,14 @@ class _AuthScreenState extends State<AuthScreen> {
   void navigateToSignUp() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SignUpScreen()), 
+      MaterialPageRoute(builder: (context) => const SignUpScreen()), 
     );
   }
 
   void navigateToSignIn() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SignInScreen()), 
+      MaterialPageRoute(builder: (context) => const SignInScreen()), 
     );
   }
 
@@ -38,7 +41,7 @@ class _AuthScreenState extends State<AuthScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.push(
                 context,
@@ -56,12 +59,12 @@ class _AuthScreenState extends State<AuthScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   'Nothing comes out of doing nothing',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -69,19 +72,19 @@ class _AuthScreenState extends State<AuthScreen> {
                       onPressed: navigateToSignUp,
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
-                            isSignUpSelected ? Color(0xFF0867F5) : Colors.white,
+                            isSignUpSelected ? const Color(0xFF0867F5) : Colors.white,
                         foregroundColor:
                             isSignUpSelected ? Colors.white : Colors.black,
-                        shadowColor: Color(0xFF0867F5),
+                        shadowColor: const Color(0xFF0867F5),
                         elevation: 10,
                         padding:
-                            EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                            const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
-                          side: BorderSide(color: Color(0xFF0867F5)),
+                          side: const BorderSide(color: Color(0xFF0867F5)),
                         ),
                       ),
-                      child: Text(
+                      child: const Text(
                         'Sign Up',
                         style: TextStyle(
                           fontSize: 16,
@@ -93,20 +96,20 @@ class _AuthScreenState extends State<AuthScreen> {
                       onPressed: navigateToSignIn,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: !isSignUpSelected
-                            ? Color(0xFF0867F5)
+                            ? const Color(0xFF0867F5)
                             : Colors.white,
                         foregroundColor:
                             !isSignUpSelected ? Colors.white : Colors.black,
-                        shadowColor: Color(0xFF0867F5),
+                        shadowColor: const Color(0xFF0867F5),
                         elevation: 10,
                         padding:
-                            EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                            const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
-                          side: BorderSide(color: Color(0xFF0867F5)),
+                          side: const BorderSide(color: Color(0xFF0867F5)),
                         ),
                       ),
-                      child: Text(
+                      child: const Text(
                         'Sign In',
                         style: TextStyle(
                           fontSize: 16,
@@ -116,7 +119,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: 25),
+                const SizedBox(height: 25),
               ],
             ),
           ),
@@ -126,7 +129,7 @@ class _AuthScreenState extends State<AuthScreen> {
               child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color(0xFF0867F5),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20),
@@ -143,9 +146,9 @@ class _AuthScreenState extends State<AuthScreen> {
                         height: 200,
                       ),
                     ),
-                    SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                    const SizedBox(height: 20),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
                       child: Text(
                         'Inspiring people to use available resources to achieve success in whatever they aspire for in life',
                         style: TextStyle(
@@ -156,10 +159,10 @@ class _AuthScreenState extends State<AuthScreen> {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     TextButton(
                       onPressed: skipToHome,
-                      child: Text(
+                      child: const Text(
                         "Skip",
                         style: TextStyle(
                           color: Colors.black,

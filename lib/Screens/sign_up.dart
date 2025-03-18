@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../services/auth_service.dart';
 import 'sign_in.dart';
 
+
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
 
@@ -86,7 +87,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: Text('Validation Errors'),
+              title: const Text('Validation Errors'),
               content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -97,8 +98,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 4),
                         child: Row(
                           children: [
-                            Icon(Icons.error_outline, color: Colors.red, size: 20),
-                            SizedBox(width: 8),
+                            const Icon(Icons.error_outline, color: Colors.red, size: 20),
+                            const SizedBox(width: 8),
                             Expanded(
                               child: Text(
                                 error,
@@ -114,7 +115,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text('OK'),
+                  child: const Text('OK'),
                 ),
               ],
             ),
@@ -134,11 +135,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Widget _buildErrorDisplay() {
-    if (_errorMessage.isEmpty) return SizedBox.shrink();
+    if (_errorMessage.isEmpty) return const SizedBox.shrink();
     
     return Container(
-      margin: EdgeInsets.only(bottom: 16.0),
-      padding: EdgeInsets.all(12.0),
+      margin: const EdgeInsets.only(bottom: 16.0),
+      padding: const EdgeInsets.all(12.0),
       decoration: BoxDecoration(
         color: Colors.red.withOpacity(0.1),
         borderRadius: BorderRadius.circular(8),
@@ -146,12 +147,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
       child: Row(
         children: [
-          Icon(Icons.error_outline, color: Colors.red),
-          SizedBox(width: 8),
+          const Icon(Icons.error_outline, color: Colors.red),
+          const SizedBox(width: 8),
           Expanded(
             child: Text(
               _errorMessage,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.red,
                 fontWeight: FontWeight.w500,
               ),
@@ -168,7 +169,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -199,17 +200,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     Align(
                       alignment: Alignment.topLeft,
                       child: IconButton(
-                        icon: Icon(Icons.arrow_back, color: Colors.white),
+                        icon: const Icon(Icons.arrow_back, color: Colors.white),
                         onPressed: () => Navigator.pop(context),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Container(
-                      padding: EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.3),
                         borderRadius: BorderRadius.circular(15),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             color: Colors.black26,
                             blurRadius: 10,
@@ -231,7 +232,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           if (_errorMessage.isNotEmpty)
                             _buildErrorDisplay(),
                           _buildTextField(
@@ -291,20 +292,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               return null;
                             },
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blue.shade800,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              padding: EdgeInsets.symmetric(vertical: 15),
-                              minimumSize: Size(double.infinity, 50),
+                              padding: const EdgeInsets.symmetric(vertical: 15),
+                              minimumSize: const Size(double.infinity, 50),
                             ),
                             onPressed: _isLoading ? null : _handleSignUp,
                             child: _isLoading
-                                ? CircularProgressIndicator(color: Colors.white)
-                                : Text(
+                                ? const CircularProgressIndicator(color: Colors.white)
+                                : const Text(
                                     "Sign Up",
                                     style: TextStyle(
                                       fontSize: 16,
@@ -313,7 +314,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     ),
                                   ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           _buildSocialButton(
                             "Continue with Google",
                             "assets/image/google-removebg-preview.png",
@@ -347,7 +348,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Colors.black26,
               blurRadius: 5,
@@ -360,7 +361,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           controller: controller,
           obscureText: isPassword && !_passwordVisible,
           validator: validator,
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
           decoration: InputDecoration(
             filled: true,
             fillColor: Colors.white,
@@ -379,14 +380,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Colors.red),
+              borderSide: const BorderSide(color: Colors.red),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Colors.red),
+              borderSide: const BorderSide(color: Colors.red),
             ),
-            contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-            errorStyle: TextStyle(color: Colors.red),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            errorStyle: const TextStyle(color: Colors.red),
             suffixIcon: isPassword
                 ? IconButton(
                     icon: Icon(
@@ -413,17 +414,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
         icon: Image.asset(iconPath, height: 24),
         style: OutlinedButton.styleFrom(
           backgroundColor: Colors.white,
-          side: BorderSide(color: Colors.white),
+          side: const BorderSide(color: Colors.white),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          padding: EdgeInsets.symmetric(vertical: 15),
-          minimumSize: Size(double.infinity, 50),
+          padding: const EdgeInsets.symmetric(vertical: 15),
+          minimumSize: const Size(double.infinity, 50),
         ),
         onPressed: () {},
         label: Text(
           text,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black,
             fontSize: 16,
             fontWeight: FontWeight.bold,

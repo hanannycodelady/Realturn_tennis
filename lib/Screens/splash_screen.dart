@@ -1,6 +1,54 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:realturn_app/Screens/auth_screen.dart';
 
-class SplashScreen extends StatelessWidget {
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _fadeAnimation;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    );
+
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeIn),
+    );
+
+    _scaleAnimation = Tween<double>(begin: 0.8, end: 1.2).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.elasticInOut),
+    );
+
+    _controller.forward();
+
+    // Delay before navigating to the Auth Screen
+    Timer(const Duration(seconds: 5), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => AuthScreen()), 
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,41 +57,26 @@ class SplashScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Logo Image
+          // Animated Logo
           Center(
-            child: Image.asset(
-              'assets/image/logo.JPG', 
-              height: 400,
-              width: 400,
-            ),
-          ),
-          SizedBox(height: 30),
-
-          // Start journey Button
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 50.0),
-            child: ElevatedButton(
-              onPressed: () {
-                // Navigate to Auth Screen
-                Navigator.pushReplacementNamed(context, '/AuthScreen');
+            child: AnimatedBuilder(
+              animation: _controller,
+              builder: (context, child) {
+                return Opacity(
+                  opacity: _fadeAnimation.value,
+                  child: Transform.scale(
+                    scale: _scaleAnimation.value,
+                    child: Image.asset(
+                      'assets/image/logo.JPG',
+                      height: 300,
+                      width: 300,
+                    ),
+                  ),
+                );
               },
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30), // Adjusted padding
-                backgroundColor: const Color.fromARGB(255, 10, 130, 228),
-              ),
-              child: Text(
-                'Start Journey',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
             ),
           ),
+          const SizedBox(height: 30),
         ],
       ),
     );
