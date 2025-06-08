@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "348748402867",
+    "firebase_url": "https://kias-4c883-default-rtdb.firebaseio.com",
+    "project_id": "kias-4c883",
+    "storage_bucket": "kias-4c883.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:348748402867:android:ba32d8b60ff2714146a0c6",
+        "android_client_info": {
+          "package_name": "com.bakar.hamsonline"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8AuqhWd4D235uPq2pLUFKd-8H6hr3zfY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:348748402867:android:a7676a6f26cb7c9946a0c6",
+        "android_client_info": {
+          "package_name": "com.bakar.ugasend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8AuqhWd4D235uPq2pLUFKd-8H6hr3zfY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:348748402867:android:f54375a009de688d46a0c6",
+        "android_client_info": {
+          "package_name": "com.baker.kia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8AuqhWd4D235uPq2pLUFKd-8H6hr3zfY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

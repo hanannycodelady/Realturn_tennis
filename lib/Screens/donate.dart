@@ -3,7 +3,6 @@ import 'package:realturn_app/Screens/Donating.dart';
 import 'package:realturn_app/Screens/mobile_money.dart';
 import 'package:realturn_app/Screens/options.dart';
 
-
 class DonationScreen extends StatelessWidget {
   const DonationScreen({super.key});
 
@@ -15,7 +14,7 @@ class DonationScreen extends StatelessWidget {
         backgroundColor: const Color.fromARGB(255, 4, 104, 253),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Color.fromARGB(255, 248, 247, 247)),
           onPressed: () {
             Navigator.push(
                   context,
@@ -33,6 +32,19 @@ class DonationScreen extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 20.0),
+                      child: Text(
+                        "Support Real Tennis Projects!\nYour donation empowers communities and changes lives.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 30),
                     DonationButton(
                       text: "Donate with Mobile Money",
                       borderColor: Colors.black,
@@ -57,17 +69,17 @@ class DonationScreen extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 20),
-                    DonationButton(
-                      text: "Donate with PayPal",
-                      borderColor: Colors.black,
-                      textColor: Colors.black,
-                      onTap: () {
-                        //  Navigator.push(
-                        // context,
-                        // MaterialPageRoute(
-                        //     builder: (context) => CreditCardDonationScreen ()));
-                      },
-                    ),
+                    // DonationButton(
+                    //   text: "Donate with PayPal",
+                    //   borderColor: Colors.black,
+                    //   textColor: Colors.black,
+                    //   onTap: () {
+                    //      Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => DonationScreenOptions()));
+                    //   },
+                    // ),
                   ],
                 ),
               ),
@@ -78,7 +90,7 @@ class DonationScreen extends StatelessWidget {
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Text(
-                "© 2024 Real Tennis Projects",
+                "© 2025 Realturn Tennis uganda",
                 style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
               ),
             ),

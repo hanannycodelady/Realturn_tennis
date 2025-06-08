@@ -1,0 +1,2 @@
+C:/Users/hp/Desktop/new_realturn/real_turn_project/Frontend/new_app/realturn_app/android/app/.cxx/Debug/6r5a5m26/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/hp/Desktop/new_realturn/real_turn_project/Frontend/new_app/realturn_app/android/app/.cxx/Debug/6r5a5m26/armeabi-v7a/CMakeFiles/rebuild_cache.dir

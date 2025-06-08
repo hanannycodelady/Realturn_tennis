@@ -1,4 +1,7 @@
+
+
 import 'package:flutter/material.dart';
+import 'package:realturn_app/Screens/forgot_password.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Home_screen.dart';
 import 'sign_up.dart';
@@ -207,15 +210,15 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Colors.white),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
+                    // Align(
+                    //   alignment: Alignment.topLeft,
+                    //   child: IconButton(
+                    //     icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    //     onPressed: () {
+                    //       Navigator.pop(context);
+                    //     },
+                    //   ),
+                    // ),
                     const SizedBox(height: 60),
                     Container(
                       padding: const EdgeInsets.all(20),
@@ -257,8 +260,18 @@ class _SignInScreenState extends State<SignInScreen> {
                           Align(
                             alignment: Alignment.centerRight,
                             child: TextButton(
-                              onPressed: () {},
-                              child: const Text("Forgot password?", style: TextStyle(color: Colors.black)),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const ForgotPasswordScreen(email: null, token: null,),
+                                  ),
+                                );
+                              },
+                              child: const Text(
+                                "Forgot password?",
+                                style: TextStyle(color: Colors.black),
+                              ),
                             ),
                           ),
                           const SizedBox(height: 20),
@@ -266,7 +279,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               ? const CircularProgressIndicator(color: Colors.white)
                               : ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.blue.shade800,
+                                    backgroundColor: const Color.fromARGB(255, 15, 15, 15),
                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                                     padding: const EdgeInsets.symmetric(vertical: 15),
                                     minimumSize: const Size(double.infinity, 50),

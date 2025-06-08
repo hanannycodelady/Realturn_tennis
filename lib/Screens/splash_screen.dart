@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:realturn_app/Screens/auth_screen.dart';
+import 'package:realturn_app/Screens/Onboarding_screen.dart';
+
 
 
 class SplashScreen extends StatefulWidget {
@@ -38,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     Timer(const Duration(seconds: 5), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => AuthScreen()), 
+        MaterialPageRoute(builder: (context) => OnboardingScreen()), 
       );
     });
   }
@@ -68,8 +69,8 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                     scale: _scaleAnimation.value,
                     child: Image.asset(
                       'assets/image/logo.JPG',
-                      height: 300,
-                      width: 300,
+                      height: 200,
+                      width: 200,
                     ),
                   ),
                 );

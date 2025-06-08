@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:realturn_app/Screens/Players_overview.dart';
-
 import 'package:realturn_app/models/PlayerCard.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class FemalePlayer extends StatefulWidget {
-  const FemalePlayer({Key? key}) : super(key: key);
+  const FemalePlayer({
+    Key? key,
+    required String name,
+    required String image1,
+    required String details,
+    required String image2,
+    required playerName,
+  }) : super(key: key);
 
   @override
   _FemalePlayerState createState() => _FemalePlayerState();
@@ -12,19 +20,16 @@ class FemalePlayer extends StatefulWidget {
 
 class _FemalePlayerState extends State<FemalePlayer> {
   final TextEditingController _searchController = TextEditingController();
-  List<PlayerCard> allPlayers = [
-    PlayerCard(firstName: "THABITHA", lastName: "WANJIKU", country: "KEN", ranking: 1, points: 8016),
-    PlayerCard(firstName: "JANE", lastName: "WANJIRU", country: "KEN", ranking: 2, points: 7889),
-    PlayerCard(firstName: "FAITH", lastName: "NAMUGAABE", country: "UGA", ranking: 3, points: 6425),
-    PlayerCard(firstName: "SUSAN", lastName: "MWEDEKI", country: "TZA", ranking: 4, points: 4587),
-  ];
+  final DatabaseReference _playersRef = FirebaseDatabase.instance.ref('players');
 
+  List<PlayerCard> allPlayers = [];
   List<PlayerCard> filteredPlayers = [];
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    filteredPlayers = allPlayers;
+    fetchFemalePlayersFromFirebase();
     _searchController.addListener(_filterPlayers);
   }
 
@@ -34,12 +39,73 @@ class _FemalePlayerState extends State<FemalePlayer> {
     super.dispose();
   }
 
+  // Fetch female players from Firebase Realtime Database
+  Future<void> fetchFemalePlayersFromFirebase() async {
+    try {
+      setState(() => isLoading = true);
+
+      final snapshot = await _playersRef.get();
+
+      if (snapshot.exists) {
+        List<PlayerCard> players = [];
+
+        // Handle both array and object structures
+        if (snapshot.value is List) {
+          List<dynamic> playersData = snapshot.value as List<dynamic>;
+          for (int i = 0; i < playersData.length; i++) {
+            if (playersData[i] != null) {
+              Map<String, dynamic> playerData = Map<String, dynamic>.from(playersData[i]);
+              // Filter for female players only
+              if (playerData['gender']?.toString().toLowerCase() == 'female' ||
+                  playerData['gender']?.toString().toLowerCase() == 'f') {
+                players.add(PlayerCard.fromFirebaseJson(playerData));
+              }
+            }
+          }
+        } else {
+          Map<String, dynamic> playersData = Map<String, dynamic>.from(snapshot.value as Map);
+          playersData.forEach((key, value) {
+            if (value != null) {
+              Map<String, dynamic> playerData = Map<String, dynamic>.from(value);
+              // Filter for female players only
+              if (playerData['gender']?.toString().toLowerCase() == 'female' ||
+                  playerData['gender']?.toString().toLowerCase() == 'f') {
+                players.add(PlayerCard.fromFirebaseJson(playerData));
+              }
+            }
+          });
+        }
+
+        setState(() {
+          allPlayers = players;
+          filteredPlayers = players;
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          allPlayers = [];
+          filteredPlayers = [];
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() => isLoading = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error fetching players: $e')),
+        );
+      }
+      print('Error fetching players: $e');
+    }
+  }
+
   void _filterPlayers() {
     String query = _searchController.text.toLowerCase();
     setState(() {
       filteredPlayers = allPlayers.where((player) {
         return player.fullName.toLowerCase().contains(query) ||
-            (player.country?.toLowerCase().contains(query) ?? false);
+            (player.country?.toLowerCase().contains(query) ?? false) ||
+            (player.nationality.toLowerCase().contains(query));
       }).toList();
     });
   }
@@ -47,6 +113,7 @@ class _FemalePlayerState extends State<FemalePlayer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       body: Column(
         children: [
           Container(
@@ -104,34 +171,57 @@ class _FemalePlayerState extends State<FemalePlayer> {
           ),
           Expanded(
             child: Container(
-              color: Colors.grey[100],
+              color: Colors.grey[300],
               padding: const EdgeInsets.all(12),
-              child: filteredPlayers.isEmpty
-                  ? const Center(
-                      child: Text(
-                        "No players found",
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
-                      ),
-                    )
-                  : GridView.count(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.8,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      children: filteredPlayers
-                          .map((player) => GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => PlayerOverviewScreen(player: player),
-                                    ),
-                                  );
-                                },
-                                child: _buildPlayerCard(player),
-                              ))
-                          .toList(),
-                    ),
+              child: isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : filteredPlayers.isEmpty
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "No female players found",
+                                style: TextStyle(fontSize: 16, color: Colors.grey),
+                              ),
+                              const SizedBox(height: 16),
+                              ElevatedButton(
+                                onPressed: fetchFemalePlayersFromFirebase,
+                                child: const Text("Retry"),
+                              ),
+                            ],
+                          ),
+                        )
+                      : RefreshIndicator(
+                          onRefresh: fetchFemalePlayersFromFirebase,
+                          child: GridView.builder(
+                            padding: const EdgeInsets.all(8),
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 0.75,
+                              crossAxisSpacing: 16,
+                              mainAxisSpacing: 16,
+                            ),
+                            itemCount: filteredPlayers.length,
+                            itemBuilder: (context, index) {
+                              final player = filteredPlayers[index];
+                              return AnimatedContainer(
+                                duration: const Duration(milliseconds: 200),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => PlayerOverviewScreen(player: player),
+                                      ),
+                                    );
+                                  },
+                                  child: _buildPlayerCard(player),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
             ),
           ),
         ],
@@ -140,6 +230,17 @@ class _FemalePlayerState extends State<FemalePlayer> {
   }
 
   Widget _buildPlayerCard(PlayerCard player) {
+    // Validate Firebase Storage URL
+    bool isValidUrl(String? url) {
+      if (url == null || url.isEmpty) return false;
+      final uri = Uri.tryParse(url);
+      if (uri == null || !uri.hasScheme || !uri.hasAuthority) return false;
+      // Check for Firebase Storage URL pattern
+      return url.contains('firebasestorage.googleapis.com') &&
+             url.contains('alt=media') &&
+             url.contains('token=');
+    }
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -167,13 +268,48 @@ class _FemalePlayerState extends State<FemalePlayer> {
                     shape: BoxShape.circle,
                     border: Border.all(color: Colors.black, width: 1),
                   ),
-                  child: Center(
-                    child: Icon(Icons.person, size: 40, color: Colors.grey[700]),
+                  child: ClipOval(
+                    child: player.playerImage != null && isValidUrl(player.playerImage)
+                        ? CachedNetworkImage(
+                            imageUrl: player.playerImage!,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                            errorWidget: (context, url, error) {
+                              print('Error loading player image: $url - $error');
+                              CachedNetworkImage.evictFromCache(url);
+                              return Image.asset(
+                                'assets/image/default_player.png',
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  print('Error loading default player asset: $error');
+                                  return Icon(
+                                    Icons.person,
+                                    size: 40,
+                                    color: Colors.grey[700],
+                                  );
+                                },
+                              );
+                            },
+                          )
+                        : Image.asset(
+                            'assets/image/default_player.png',
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              print('Error loading default player asset: $error');
+                              return Icon(
+                                Icons.person,
+                                size: 40,
+                                color: Colors.grey[700],
+                              );
+                            },
+                          ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Container(height: 2, color: Colors.black),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                  child: Divider(height: 2, color: Colors.black),
                 ),
               ],
             ),
@@ -186,6 +322,14 @@ class _FemalePlayerState extends State<FemalePlayer> {
                   player.fullName,
                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                   textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  player.nationality,
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 4),
                 Container(
@@ -195,10 +339,52 @@ class _FemalePlayerState extends State<FemalePlayer> {
                     borderRadius: BorderRadius.circular(4),
                     border: Border.all(color: Colors.black, width: 1),
                   ),
-                  child: Text(
-                    player.country ?? "",
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                  ),
+                  child: player.flagUrl.isNotEmpty && isValidUrl(player.flagUrl)
+                      ? CachedNetworkImage(
+                          imageUrl: player.flagUrl,
+                          width: 20,
+                          height: 15,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => const Center(
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                          errorWidget: (context, url, error) {
+                            print('Error loading flag image: $url - $error');
+                            CachedNetworkImage.evictFromCache(url);
+                            return Image.asset(
+                              'assets/image/default_flag.png',
+                              width: 20,
+                              height: 15,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                print('Error loading default flag asset: $error');
+                                return Text(
+                                  player.country ?? '',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        )
+                      : Image.asset(
+                          'assets/image/default_flag.png',
+                          width: 20,
+                          height: 15,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            print('Error loading default flag asset: $error');
+                            return Text(
+                              player.country ?? '',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              ),
+                            );
+                          },
+                        ),
                 ),
               ],
             ),
@@ -224,7 +410,7 @@ class _FemalePlayerState extends State<FemalePlayer> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            player.ranking.toString(),
+                            (player.ranking ?? 0).toString(),
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
@@ -248,7 +434,7 @@ class _FemalePlayerState extends State<FemalePlayer> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          player.points.toString(),
+                          (player.points ?? 0).toInt().toString(),
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,

@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:realturn_app/Screens/home_screen.dart';
 
-
-class AboutUsScreen extends StatelessWidget {
+class AboutUsScreen extends StatefulWidget {
   final bool fromMenu;
   const AboutUsScreen({super.key, required this.fromMenu});
+
+  @override
+  _AboutUsScreenState createState() => _AboutUsScreenState();
+}
+
+class _AboutUsScreenState extends State<AboutUsScreen> {
+  Map<int, bool> _isHovered = {};
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ABOUT US', style: TextStyle(color: Color.fromARGB(255, 10, 10, 10)),textAlign: TextAlign.center,),
+        title: const Text(
+          'ABOUT US',
+          style: TextStyle(color: Colors.white),
+          textAlign: TextAlign.center,
+        ),
         backgroundColor: Colors.blue,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color.fromARGB(255, 12, 12, 12)),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            if (fromMenu) {
+            if (widget.fromMenu) {
               Navigator.pop(context);
             } else {
               Navigator.pushReplacement(
@@ -27,94 +37,102 @@ class AboutUsScreen extends StatelessWidget {
           },
         ),
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(16.0),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: 10),
-                Text(
-                  'Welcome to the Real Turn Tennis Community Initiative Drive'
-                  'We are dedicated to raising awareness, fostering inclusion, and enhancing the development of lawn tennis in underserved '
-                  'communities across various districts in Uganda. Our initiative focuses on breaking barriers to entry for young and aspiring '
-                  'athletes, particularly in rural areas where access to sports infrastructure and opportunities is limited. Through strategic partnerships, '
-                  'advocacy, and outreach programs, we aim to inspire a love for the game, promote healthy lifestyles, and empower the next generation of '
-                  'tennis players by providing access to training, facilities, and support.',
-                  style: TextStyle(fontSize: 16,color: Color.fromARGB(221, 20, 20, 20)),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'OUR MISSION:',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'To promote and inspire the growth of lawn tennis, while creating career opportunities for the youth through training, '
-                  'advocacy, sponsorship, and by establishing accessible tennis facilities at the community level in different districts in Uganda.',
-                  style: TextStyle(fontSize: 16,color: Color.fromARGB(221, 20, 20, 20)),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'Target:',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Our goal is to have a presence in 25 districts and 30 colleges by 2030, with operations officially starting in January 2025.',
-                  style: TextStyle(fontSize: 16,color: Color.fromARGB(221, 20, 20, 20)),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'OUR AIM:',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'We strive to:',
-                  style: TextStyle(fontSize: 16, color: Color.fromARGB(221, 20, 20, 20)),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(height: 5),
-                Text(
-                  '• Provide free, accessible community tennis courts.\n'
-                  '• Raise public awareness about the sport.\n'
-                  '• Empower young girls to participate in tennis.\n'
-                  '• Support college tennis programs.\n'
-                  '• Lobby for sponsorship of local tournaments and events to expand the fan base.\n'
-                  '• Offer free community training, demonstration clinics, collaborations, and competitions.\n'
-                  '• Build sustainable infrastructure.\n',
-                  style: TextStyle(fontSize: 16),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(height: 20),
-                Text(
-                  '"Nothing comes out of doing nothing"',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _buildHoverCard(
+                context,
+                index: 0,
+                title: 'Welcome to the Real Turn Tennis Community Initiative Drive',
+                normalText:
+                    'We are dedicated to raising awareness, fostering inclusion, and enhancing the development of lawn tennis in underserved communities across Uganda.',
+                hoverText:
+                    'Through strategic partnerships, outreach programs, and training, we empower young athletes in rural areas with opportunities in sports.',
+              ),
+              _buildHoverCard(
+                context,
+                index: 1,
+                title: 'OUR MISSION:',
+                normalText:
+                    'To promote and inspire the growth of lawn tennis by creating career opportunities for the youth.',
+                hoverText:
+                    'We achieve this through training, advocacy, sponsorships, and establishing community tennis facilities.',
+              ),
+              _buildHoverCard(
+                context,
+                index: 2,
+                title: 'Target:',
+                normalText:
+                    'Our goal is to have a presence in 25 districts and 30 colleges by 2030.',
+                hoverText:
+                    'Operations will officially start in January 2025 with structured tennis programs.',
+              ),
+              _buildHoverCard(
+                context,
+                index: 3,
+                title: 'OUR AIM:',
+                normalText:
+                    'We strive to provide free community tennis courts, raise awareness, and empower young girls.',
+                hoverText:
+                    'Additionally, we support college tennis programs, lobby for sponsorships, and organize free training and competitions.',
+              ),
+              _buildHoverCard(
+                context,
+                index: 4,
+                title: '"Nothing comes out of doing nothing"',
+                normalText: 'A reminder that progress only comes with action.',
+                hoverText: 'Join us in making a difference in young athletes’ lives!',
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHoverCard(
+    BuildContext context, {
+    required int index,
+    required String title,
+    required String normalText,
+    required String hoverText,
+  }) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered[index] = true),
+      onExit: (_) => setState(() => _isHovered[index] = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: _isHovered[index] == true ? Colors.blueAccent : Colors.grey.withOpacity(0.3),
+              blurRadius: _isHovered[index] == true ? 15 : 5,
+              spreadRadius: _isHovered[index] == true ? 3 : 1,
             ),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Text(
+                title,
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                _isHovered[index] == true ? hoverText : normalText,
+                style: const TextStyle(fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:realturn_app/Screens/Coach.dart';
 import 'package:realturn_app/models/PlayerCard.dart';
 
 class PlayerOverviewScreen extends StatefulWidget {
@@ -38,7 +39,6 @@ class _PlayerOverviewScreenState extends State<PlayerOverviewScreen>
               SliverToBoxAdapter(
                 child: Column(
                   children: [
-                    //_buildStatusBar(),
                     _buildRankingHeader(),
                     _buildProfilePicture(),
                     _buildPlayerInfo(),
@@ -70,7 +70,6 @@ class _PlayerOverviewScreenState extends State<PlayerOverviewScreen>
     );
   }
 
-
   Widget _buildRankingHeader() {
     return Container(
       padding: const EdgeInsets.all(15),
@@ -79,24 +78,31 @@ class _PlayerOverviewScreenState extends State<PlayerOverviewScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Icons.arrow_back, color: Colors.white),
-              SizedBox(width: 10),
-              Text('RANKING',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold)),
+              IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: () => Navigator.pop(context),
+              ),
+              const SizedBox(width: 10),
+              const Text(
+                'RANKING',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
-          const Text(
-            '1',
-            style: TextStyle(
+          Text(
+            widget.player.ranking.toString(),
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 48,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
         ],
       ),
     );
@@ -127,16 +133,16 @@ class _PlayerOverviewScreenState extends State<PlayerOverviewScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Hananny',
-            style: TextStyle(
+          Text(
+            widget.player.firstName,
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 28,
             ),
           ),
-          const Text(
-            'Wanjiku',
-            style: TextStyle(
+          Text(
+            widget.player.lastName,
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 32,
               fontWeight: FontWeight.bold,
@@ -242,16 +248,30 @@ class _PlayerOverviewScreenState extends State<PlayerOverviewScreen>
             style: TextStyle(color: Colors.white, fontSize: 18),
           ),
           const SizedBox(height: 5),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            color: Colors.white,
-            width: double.infinity,
-            alignment: Alignment.center,
-            child: const Text(
-              'GODFREY MAX SEMUKAYA',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
+          GestureDetector(
+            onTap: () {
+              if (widget.player.coachName != null) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CoachBioScreen(coachName: widget.player.coachName!, coachId: '',),
+                  ),
+                );
+              }
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              color: Colors.white,
+              width: double.infinity,
+              alignment: Alignment.center,
+              child: Text(
+                widget.player.coachName ?? 'Godfrey max',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Colors.blue,
+                  decoration: TextDecoration.underline,
+                ),
               ),
             ),
           ),
@@ -380,19 +400,19 @@ class _PlayerOverviewScreenState extends State<PlayerOverviewScreen>
                 ),
                 child: Row(
                   children: [
-                    const Expanded(
+                    Expanded(
                       flex: 3,
                       child: Padding(
-                        padding: EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: Row(
                           children: [
                             Text(
-                              'W.hananny ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              '${widget.player.firstName[0]}.${widget.player.lastName} ',
+                              style: const TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              '(1)',
-                              style: TextStyle(
+                              '(${widget.player.ranking})',
+                              style: const TextStyle(
                                 color: Colors.blue,
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
@@ -576,9 +596,9 @@ class _PlayerOverviewScreenState extends State<PlayerOverviewScreen>
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   color: Colors.black54,
-                  child: const Text(
-                    'MBARARA TENNIS OPEN 20XX\nHANANNY VS ANGELLA\n4-0,4-0',
-                    style: TextStyle(
+                  child: Text(
+                    'MBARARA TENNIS OPEN 20XX\n${widget.player.firstName.toUpperCase()} VS ANGELLA\n4-0,4-0',
+                    style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
@@ -686,17 +706,17 @@ class _PlayerOverviewScreenState extends State<PlayerOverviewScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'More on Wanjiku',
-              style: TextStyle(
+            Text(
+              'More on ${widget.player.lastName}',
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 10),
-            const Text(
-              'Coached by Godfrey max semukaya.\nStarted playing when she was 6, her dad took her in several sports but she choose to play tennis. Has a sweet tooth and considers something sweet as a perfect present. She loves her mother\'s cooking.',
-              style: TextStyle(fontSize: 14, height: 1.4),
+            Text(
+              'Coached by ${widget.player.coachName ?? 'N/A'}.\nStarted playing when she was 6, her dad took her in several sports but she choose to play tennis. Has a sweet tooth and considers something sweet as a perfect present. She loves her mother\'s cooking.',
+              style: const TextStyle(fontSize: 14, height: 1.4),
             ),
             const SizedBox(height: 20),
             const Text(
@@ -753,9 +773,9 @@ class _PlayerOverviewScreenState extends State<PlayerOverviewScreen>
               ),
             ),
             const SizedBox(height: 5),
-            const Text(
-              'Wanjiku hananny is celebrated for her fierce competitiveness and adaptability on the court. Her strong forehand and quick footwork make her a formidable opponent in singles matches, while her exceptional net play and teamwork shine in doubles competitions. She is particularly known for her performance under pressure, often turning matches with her mental toughness and tactical adjustments. Critics have praised her for being a trailblazer in Ugandan women\'s tennis, inspiring a new generation of players.',
-              style: TextStyle(fontSize: 14, height: 1.4),
+            Text(
+              '${widget.player.firstName} ${widget.player.lastName} is celebrated for her fierce competitiveness and adaptability on the court. Her strong forehand and quick footwork make her a formidable opponent in singles matches, while her exceptional net play and teamwork shine in doubles competitions. She is particularly known for her performance under pressure, often turning matches with her mental toughness and tactical adjustments. Critics have praised her for being a trailblazer in Ugandan women\'s tennis, inspiring a new generation of players.',
+              style: const TextStyle(fontSize: 14, height: 1.4),
             ),
             const SizedBox(height: 10),
             const Text(
@@ -817,15 +837,13 @@ class _PlayerOverviewScreenState extends State<PlayerOverviewScreen>
               childAspectRatio: 1.5,
               mainAxisSpacing: 10,
               crossAxisSpacing: 10,
-              children: const [
-                StatBox(title: 'Ranking', value: '1', subtitle: 'Singles'),
-                StatBox(title: 'Match Played', value: '20', year: '2024'),
-                StatBox(title: 'Aces', value: '90', year: '2024'),
-                StatBox(
-                    title: 'Service Games\nwon', value: '50%', year: '2024'),
-                StatBox(
-                    title: 'Return Games\nwon', value: '40.0%', year: '2024'),
-                StatBox(title: '1st Serve won', value: '25%', year: '2024'),
+              children: [
+                StatBox(title: 'Ranking', value: widget.player.ranking.toString(), subtitle: 'Singles'),
+                const StatBox(title: 'Match Played', value: '20', year: '2024'),
+                const StatBox(title: 'Aces', value: '90', year: '2024'),
+                const StatBox(title: 'Service Games\nwon', value: '50%', year: '2024'),
+                const StatBox(title: 'Return Games\nwon', value: '40.0%', year: '2024'),
+                const StatBox(title: '1st Serve won', value: '25%', year: '2024'),
               ],
             ),
           ),
@@ -868,8 +886,7 @@ class _PlayerOverviewScreenState extends State<PlayerOverviewScreen>
               crossAxisSpacing: 10,
               childAspectRatio: 1.2,
               children: [
-                _buildRankingBox(
-                    "Currents", widget.player.ranking?.toString() ?? "1", ""),
+                _buildRankingBox("Currents", widget.player.ranking?.toString() ?? "1", ""),
                 _buildRankingBox("Highest singles", "1", "oct 10,2023"),
                 _buildRankingBox("Current doubles", "1", "2024"),
                 _buildRankingBox("Highest Doubles", "1", "feb 22,2023"),

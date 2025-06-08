@@ -5,17 +5,17 @@ class SchoolScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.blue,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Color.fromARGB(255, 245, 244, 244)),
           onPressed: () {
-            Navigator.pop(context); // Added functional back button
+            Navigator.pop(context); // Functional back button
           },
         ),
         title: const Text(
           'Schools',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Color.fromARGB(255, 255, 253, 253), fontWeight: FontWeight.bold),
         ),
       ),
       body: SingleChildScrollView(
@@ -28,13 +28,13 @@ class SchoolScreen extends StatelessWidget {
               CourtCard(
                 imageUrl: 'https://via.placeholder.com/400x200', // Valid placeholder URL
                 title: 'Brookside/Arboretum',
-                subtitle: 'outdoor tennis courts',
+                description: 'outdoor tennis courts',
               ),
               const SizedBox(height: 16),
               CourtCard(
                 imageUrl: 'https://via.placeholder.com/400x200', // Valid placeholder URL
                 title: 'Fairview 1st floor',
-                subtitle: 'indoor tennis courts',
+                description: 'indoor tennis courts',
               ),
             ],
           ),
@@ -72,13 +72,13 @@ class SearchBar extends StatelessWidget {
 class CourtCard extends StatelessWidget {
   final String imageUrl;
   final String title;
-  final String subtitle;
+  final String description;
 
   const CourtCard({
     Key? key,
     required this.imageUrl,
     required this.title,
-    required this.subtitle,
+    required this.description,
   }) : super(key: key);
 
   @override
@@ -110,7 +110,7 @@ class CourtCard extends StatelessWidget {
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8), // Reduced vertical padding
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             width: double.infinity,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,15 +121,15 @@ class CourtCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
-                  overflow: TextOverflow.ellipsis, 
+                  overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  subtitle,
+                  description,
                   style: TextStyle(
                     color: Colors.grey[600],
                     fontSize: 14,
                   ),
-                  overflow: TextOverflow.ellipsis, 
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),

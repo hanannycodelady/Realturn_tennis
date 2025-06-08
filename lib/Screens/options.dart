@@ -18,11 +18,11 @@ class _DonationScreenOptionsState extends State<DonationScreenOptions> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Color.fromARGB(255, 248, 246, 246)),
           onPressed: () => Navigator.pop(context),
         ),
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.blue,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: Padding(
@@ -74,11 +74,11 @@ class _DonationScreenOptionsState extends State<DonationScreenOptions> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const DonationForm()),
+                            builder: (context) => DonationForm()),
                       );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.blue,
                 side: const BorderSide(color: Colors.black),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -87,12 +87,12 @@ class _DonationScreenOptionsState extends State<DonationScreenOptions> {
               ),
               child: const Text(
                 "Donate with Debit or Credit Card",
-                style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
+                style: TextStyle(color: Color.fromARGB(255, 247, 245, 245), fontSize: 16, fontWeight: FontWeight.w600),
               ),
             ),
             const Spacer(),
             const Text(
-              "2024 real turn projects",
+              "2025 Realturn tennis  uganda  ",
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.black),
             ),
           ],
