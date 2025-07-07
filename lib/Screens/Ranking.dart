@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:realturn_app/Screens/Home_screen.dart';
 
 class RankingsScreen extends StatefulWidget {
   const RankingsScreen({Key? key}) : super(key: key);
@@ -8,19 +9,35 @@ class RankingsScreen extends StatefulWidget {
   _RankingsScreenState createState() => _RankingsScreenState();
 }
 
-class _RankingsScreenState extends State<RankingsScreen> {
-  String currentCategory = 'SINGLES RANKINGS';
-  List<Player> players = [];
+class _RankingsScreenState extends State<RankingsScreen> with TickerProviderStateMixin {
+  String currentCategory = 'Men';
+  List<Player> malePlayers = [];
+  List<Player> femalePlayers = [];
   bool isLoading = true;
+  late AnimationController _fadeController;
+  late AnimationController _slideController;
 
-  final List<String> categories = [
-    'SINGLES RANKINGS',
-  ];
+  final List<String> categories = ['Men', 'Women'];
 
   @override
   void initState() {
     super.initState();
+    _fadeController = AnimationController(
+      duration: const Duration(milliseconds: 1000),
+      vsync: this,
+    );
+    _slideController = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    );
     _fetchPlayersFromFirebase();
+  }
+
+  @override
+  void dispose() {
+    _fadeController.dispose();
+    _slideController.dispose();
+    super.dispose();
   }
 
   Future<void> _fetchPlayersFromFirebase() async {
@@ -30,21 +47,31 @@ class _RankingsScreenState extends State<RankingsScreen> {
       
       if (event.snapshot.exists) {
         Map<dynamic, dynamic> playersData = event.snapshot.value as Map<dynamic, dynamic>;
-        List<Player> fetchedPlayers = [];
+        List<Player> fetchedMalePlayers = [];
+        List<Player> fetchedFemalePlayers = [];
         
         playersData.forEach((key, value) {
           if (value is Map) {
-            fetchedPlayers.add(Player.fromFirebase(key, Map<String, dynamic>.from(value)));
+            Player player = Player.fromFirebase(key, Map<String, dynamic>.from(value));
+            if (player.gender?.toLowerCase() == 'male') {
+              fetchedMalePlayers.add(player);
+            } else if (player.gender?.toLowerCase() == 'female') {
+              fetchedFemalePlayers.add(player);
+            }
           }
         });
         
-        // Sort players by ranking
-        fetchedPlayers.sort((a, b) => a.rank.compareTo(b.rank));
+        fetchedMalePlayers.sort((a, b) => a.rank.compareTo(b.rank));
+        fetchedFemalePlayers.sort((a, b) => a.rank.compareTo(b.rank));
         
         setState(() {
-          players = fetchedPlayers;
+          malePlayers = fetchedMalePlayers;
+          femalePlayers = fetchedFemalePlayers;
           isLoading = false;
         });
+        
+        _fadeController.forward();
+        _slideController.forward();
       } else {
         setState(() {
           isLoading = false;
@@ -61,66 +88,160 @@ class _RankingsScreenState extends State<RankingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(''),
-        automaticallyImplyLeading: false,
-        flexibleSpace: _buildCategoryTabs(),
-      ),
-      body: Column(
-        children: [
-          const Divider(height: 1, color: Colors.grey),
-          _buildColumnHeaders(),
-          Expanded(
-            child: isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : players.isEmpty
-                    ? const Center(child: Text('No players found'))
-                    : ListView.builder(
-                        itemCount: players.length,
-                        itemBuilder: (context, index) {
-                          return _buildPlayerRow(players[index]);
-                        },
-                      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFF0D47A1), // Dark blue
+              Color(0xFF1976D2), // Primary blue
+              Color(0xFF42A5F5), // Light blue
+              Color(0xFF1565C0), // Mid blue
+            ],
+            stops: [0.0, 0.3, 0.7, 1.0],
           ),
-        ],
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              _buildGlassmorphicHeader(),
+              Expanded(
+                child: isLoading
+                    ? _buildLoadingState()
+                    : (currentCategory == 'Men' ? malePlayers : femalePlayers).isEmpty
+                        ? _buildEmptyState()
+                        : _buildPlayersList(),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGlassmorphicHeader() {
+    return Container(
+      margin: const EdgeInsets.all(16),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: Colors.white.withOpacity(0.2),
+              width: 1,
+            ),
+          ),
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                        size: 28,
+                      ),
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => const HomeScreen()),
+                        );
+                      },
+                    ),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.emoji_events,
+                            color: Colors.amber,
+                            size: 24,
+                          ),
+                          const SizedBox(width: 8),
+                          Flexible(
+                            child: Text(
+                              'PLAYER RANKINGS',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.2,
+                                shadows: [
+                                  Shadow(
+                                    color: Colors.black.withOpacity(0.3),
+                                    offset: const Offset(2, 2),
+                                    blurRadius: 4,
+                                  ),
+                                ],
+                              ),
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 40),
+                  ],
+                ),
+              ),
+              _buildCategoryTabs(),
+              _buildColumnHeaders(),
+            ],
+          ),
+        ),
       ),
     );
   }
 
   Widget _buildCategoryTabs() {
     return Container(
-      color: Colors.black,
+      height: 50,
+      margin: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: categories.map((category) {
           bool isSelected = currentCategory == category;
           return Expanded(
-            child: InkWell(
-              onTap: () {
-                setState(() {
-                  currentCategory = category;
-                });
-              },
-              child: Container(
-                height: 56,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: isSelected ? Colors.white : Colors.transparent,
-                      width: 4,
-                    ),
-                  ),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              margin: const EdgeInsets.symmetric(horizontal: 4),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: isSelected 
+                    ? Colors.amber.withOpacity(0.2)
+                    : Colors.transparent,
+                border: Border.all(
+                  color: isSelected ? Colors.amber : Colors.white.withOpacity(0.3),
+                  width: 1,
                 ),
-                child: Text(
-                  category,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight:
-                        isSelected ? FontWeight.bold : FontWeight.normal,
-                    fontSize: 12,
+              ),
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    currentCategory = category;
+                    _slideController.reset();
+                    _slideController.forward();
+                  });
+                },
+                borderRadius: BorderRadius.circular(12),
+                child: Center(
+                  child: Text(
+                    category.toUpperCase(),
+                    style: TextStyle(
+                      color: isSelected ? Colors.amber : Colors.white,
+                      fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                      fontSize: 12,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
@@ -130,189 +251,308 @@ class _RankingsScreenState extends State<RankingsScreen> {
     );
   }
 
-
-
   Widget _buildColumnHeaders() {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      color: Colors.white,
-      child: Row(
-        children: [
-          _buildColumnHeader('Rank', flex: 1, isFirst: true),
-          _buildColumnHeader('Player', flex: 3),
-          _buildColumnHeader('Nationality', flex: 2),
-          _buildColumnHeader('Age', flex: 1),
-          _buildColumnHeader('Points', flex: 1, isLast: true),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildColumnHeader(String text,
-      {required int flex,
-      bool isFirst = false,
-      bool isLast = false,
-      bool isNumeric = false}) {
-    return Expanded(
-      flex: flex,
-      child: Row(
-        mainAxisAlignment:
-            isNumeric ? MainAxisAlignment.end : MainAxisAlignment.start,
-        children: [
-          if (isFirst) const Icon(Icons.arrow_downward, size: 12),
-          if (isFirst) const SizedBox(width: 4),
-          Flexible(
-            child: Text(
-              text,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 12,
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          if (!isFirst && !isLast) const Icon(Icons.unfold_more, size: 12),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPlayerRow(Player player) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+      margin: const EdgeInsets.only(top: 16),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.05),
         border: Border(
-          bottom: BorderSide(color: Color(0xFFE6E6E6), width: 1),
+          top: BorderSide(
+            color: Colors.white.withOpacity(0.1),
+            width: 1,
+          ),
         ),
       ),
-      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         children: [
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    player.rank.toString(),
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(width: 4),
-                  const Text('-'),
-                  const SizedBox(width: 4),
-                  const Icon(Icons.star_border, size: 16),
-                ],
+          _buildColumnHeader('RANK', flex: 1),
+          _buildColumnHeader('PLAYER', flex: 3),
+          _buildColumnHeader('COUNTRY', flex: 2),
+          _buildColumnHeader('AGE', flex: 1),
+          _buildColumnHeader('POINTS', flex: 1),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildColumnHeader(String text, {required int flex}) {
+    return Expanded(
+      flex: flex,
+      child: Text(
+        text,
+        style: TextStyle(
+          color: Colors.white.withOpacity(0.8),
+          fontSize: 11,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0.5,
+        ),
+        textAlign: flex == 1 ? TextAlign.center : TextAlign.left,
+      ),
+    );
+  }
+
+  Widget _buildPlayersList() {
+    List<Player> currentPlayers = currentCategory == 'Men' ? malePlayers : femalePlayers;
+    return FadeTransition(
+      opacity: _fadeController,
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.05),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.1),
+                width: 1,
               ),
             ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Row(
-                children: [
-                  ClipOval(
-                    child: Container(
-                      width: 40,
-                      height: 40,
-                      color: Colors.grey[300],
-                      child: player.playerImage != null && player.playerImage!.isNotEmpty
-                          ? Image.network(
-                              player.playerImage!,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) =>
-                                  const Icon(Icons.person, size: 30),
-                            )
-                          : const Icon(Icons.person, size: 30),
+            child: ListView.builder(
+              padding: const EdgeInsets.all(8),
+              itemCount: currentPlayers.length,
+              itemBuilder: (context, index) {
+                return SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(1, 0),
+                    end: Offset.zero,
+                  ).animate(CurvedAnimation(
+                    parent: _slideController,
+                    curve: Interval(
+                      index * 0.1,
+                      (index * 0.1) + 0.3,
+                      curve: Curves.easeOutCubic,
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  Flexible(
-                    child: RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: '${player.firstName} ',
-                            style: const TextStyle(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          TextSpan(
-                            text: player.lastName,
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
+                  )),
+                  child: _buildPlayerCard(currentPlayers[index], index),
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPlayerCard(Player player, int index) {
+    Color rankColor = _getRankColor(player.rank);
+    
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: Colors.white.withOpacity(0.08),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.1),
+          width: 1,
+        ),
+      ),
+      child: InkWell(
+        onTap: () {
+          // Handle player tap
+        },
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Container(
+                width: 60,
+                child: Column(
+                  children: [
+                    if (player.rank <= 3)
+                      Icon(
+                        Icons.emoji_events,
+                        color: rankColor,
+                        size: 20,
+                      ),
+                    Text(
+                      player.rank.toString(),
+                      style: TextStyle(
+                        color: rankColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Row(
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: rankColor.withOpacity(0.5),
+                          width: 2,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: rankColor.withOpacity(0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
                           ),
                         ],
                       ),
-                      overflow: TextOverflow.ellipsis,
+                      child: ClipOval(
+                        child: player.playerImage != null && player.playerImage!.isNotEmpty
+                            ? Image.network(
+                                player.playerImage!,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Container(
+                                      color: Colors.grey[700],
+                                      child: const Icon(Icons.person, color: Colors.white),
+                                    ),
+                              )
+                            : Container(
+                                color: Colors.grey[700],
+                                child: const Icon(Icons.person, color: Colors.white),
+                              ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${player.firstName} ${player.lastName}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          if (player.nationality != null)
+                            Text(
+                              player.nationality!,
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.6),
+                                fontSize: 12,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Center(
+                  child: player.flagImage != null && player.flagImage!.isNotEmpty
+                      ? Container(
+                          width: 32,
+                          height: 20,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(4),
+                            child: Image.network(
+                              player.flagImage!,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Container(color: Colors.grey[600]),
+                            ),
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Center(
+                  child: Text(
+                    player.age.toString(),
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.8),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Row(
-                children: [
-                  if (player.flagImage != null && player.flagImage!.isNotEmpty)
-                    Container(
-                      width: 24,
-                      height: 16,
-                      margin: const EdgeInsets.only(right: 8),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(2),
-                        border: Border.all(color: Colors.grey.shade300),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(2),
-                        child: Image.network(
-                          player.flagImage!,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
-                              Container(
-                                color: Colors.grey[300],
-                                
-                              ),
+              Expanded(
+                flex: 1,
+                child: Center(
+                  child: Column(
+                    children: [
+                      Text(
+                        player.points.toStringAsFixed(0),
+                        style: TextStyle(
+                          color: Colors.amber,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                  Flexible(
-                    child: Text(
-                      player.nationality ?? '',
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                      Text(
+                        'pts',
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.5),
+                          fontSize: 10,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Color _getRankColor(int rank) {
+    if (rank == 1) return const Color(0xFFFFD700); // Gold
+    if (rank == 2) return const Color(0xFFC0C0C0); // Silver
+    if (rank == 3) return const Color(0xFFCD7F32); // Bronze
+    if (rank <= 10) return Colors.amber;
+    return Colors.white;
+  }
+
+  Widget _buildLoadingState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.2),
+                width: 1,
               ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                player.age.toString(),
-                overflow: TextOverflow.ellipsis,
-              ),
+            child: const CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.amber),
+              strokeWidth: 3,
             ),
           ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                player.points.toString(),
-                style: const TextStyle(fontWeight: FontWeight.bold),
-                overflow: TextOverflow.ellipsis,
-              ),
+          const SizedBox(height: 16),
+          Text(
+            'Loading Rankings...',
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.8),
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ],
@@ -320,6 +560,50 @@ class _RankingsScreenState extends State<RankingsScreen> {
     );
   }
 
+  Widget _buildEmptyState() {
+    return Center(
+      child: Container(
+        padding: const EdgeInsets.all(40),
+        margin: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: Colors.white.withOpacity(0.2),
+            width: 1,
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.emoji_events_outlined,
+              size: 64,
+              color: Colors.white.withOpacity(0.6),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'No Players Found',
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.8),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Rankings will appear here once players are added.',
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.6),
+                fontSize: 14,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class Player {

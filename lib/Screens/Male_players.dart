@@ -195,7 +195,7 @@ class _MalePlayerState extends State<MalePlayer> {
                             padding: const EdgeInsets.all(8),
                             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
-                              childAspectRatio: 0.75,
+                              childAspectRatio: 0.85, // Adjusted for better fit
                               crossAxisSpacing: 16,
                               mainAxisSpacing: 16,
                             ),
@@ -227,7 +227,7 @@ class _MalePlayerState extends State<MalePlayer> {
   }
 
   // Helper method to build player image widget
-  Widget _buildPlayerImage(String? imageUrl, {double size = 70}) {
+  Widget _buildPlayerImage(String? imageUrl, {double size = 60}) { // Reduced size
     return Container(
       width: size,
       height: size,
@@ -322,6 +322,8 @@ class _MalePlayerState extends State<MalePlayer> {
                         fontSize: 8,
                         color: Colors.black54,
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 );
@@ -339,6 +341,8 @@ class _MalePlayerState extends State<MalePlayer> {
                     fontSize: 8,
                     color: Colors.black54,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
@@ -409,6 +413,7 @@ class _MalePlayerState extends State<MalePlayer> {
         ],
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min, // Ensure the column takes only needed space
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 12, 12, 6),
@@ -422,29 +427,34 @@ class _MalePlayerState extends State<MalePlayer> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
-            child: Column(
-              children: [
-                Text(
-                  player.fullName,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  player.nationality,
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 4),
-                _buildFlagWidget(player),
-              ],
+          Flexible( // Use Flexible to prevent overflow
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    player.fullName,
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    player.nationality,
+                    style: const TextStyle(fontSize: 10, color: Colors.grey),
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  _buildFlagWidget(player),
+                ],
+              ),
             ),
           ),
-          Expanded(
+          Flexible( // Use Flexible for the bottom section
             child: Container(
               decoration: const BoxDecoration(
                 border: Border(top: BorderSide(color: Colors.black, width: 2)),
@@ -461,19 +471,25 @@ class _MalePlayerState extends State<MalePlayer> {
                         children: [
                           Text(
                             "Singles",
-                            style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                            style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                           const SizedBox(height: 4),
                           Text(
                             (player.ranking ?? 0).toString(),
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                              fontSize: 16,
                             ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                           Text(
                             "Ranking",
-                            style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                            style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ],
                       ),
@@ -485,15 +501,19 @@ class _MalePlayerState extends State<MalePlayer> {
                       children: [
                         Text(
                           "Points",
-                          style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                          style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 4),
                         Text(
                           (player.points ?? 0).toInt().toString(),
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                            fontSize: 16,
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),

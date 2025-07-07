@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:realturn_app/Screens/Donating.dart';
+import 'package:realturn_app/Screens/credit_card.dart';
 import 'package:realturn_app/Screens/mobile_money.dart';
-import 'package:realturn_app/Screens/options.dart';
+
 
 class DonationScreen extends StatelessWidget {
   const DonationScreen({super.key});
@@ -65,7 +66,7 @@ class DonationScreen extends StatelessWidget {
                        Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => DonationScreenOptions()));
+                            builder: (context) => DonationForm()));
                       },
                     ),
                     const SizedBox(height: 20),

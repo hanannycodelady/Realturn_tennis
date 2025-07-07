@@ -258,30 +258,54 @@ class _DonationFormState extends State<DonationForm> {
   }
 
   Widget _buildAmountField() {
-    return TextFormField(
-      controller: amountController,
-      decoration: const InputDecoration(
-        hintText: 'Amount',
-        border: OutlineInputBorder(),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(4),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blue.withOpacity(0.3),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
-      keyboardType: TextInputType.number,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter donation amount';
-        }
-        if (double.tryParse(value) == null) {
-          return 'Please enter a valid amount';
-        }
-        return null;
-      },
+      child: TextFormField(
+        controller: amountController,
+        decoration: const InputDecoration(
+          hintText: 'Amount',
+          border: OutlineInputBorder(),
+          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+        ),
+        keyboardType: TextInputType.number,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter donation amount';
+          }
+          if (double.tryParse(value) == null) {
+            return 'Please enter a valid amount';
+          }
+          return null;
+        },
+      ),
     );
   }
 
   Widget _buildCountryDropdown() {
     return Container(
       decoration: BoxDecoration(
+        color: Colors.white,
         border: Border.all(color: Colors.grey.shade300),
         borderRadius: BorderRadius.circular(4),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blue.withOpacity(0.3),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
@@ -308,22 +332,37 @@ class _DonationFormState extends State<DonationForm> {
   }
 
   Widget _buildCardNumberField() {
-    return TextFormField(
-      controller: cardNumberController,
-      decoration: const InputDecoration(
-        hintText: 'Card number',
-        border: OutlineInputBorder(),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(4),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blue.withOpacity(0.3),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
-      keyboardType: TextInputType.number,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter card number';
-        }
-        if (value.length < 16) {
-          return 'Please enter a valid card number';
-        }
-        return null;
-      },
+      child: TextFormField(
+        controller: cardNumberController,
+        decoration: const InputDecoration(
+          hintText: 'Card number',
+          border: OutlineInputBorder(),
+          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+        ),
+        keyboardType: TextInputType.number,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter card number';
+          }
+          if (value.length < 16) {
+            return 'Please enter a valid card number';
+          }
+          return null;
+        },
+      ),
     );
   }
 
@@ -331,40 +370,70 @@ class _DonationFormState extends State<DonationForm> {
     return Row(
       children: [
         Expanded(
-          child: TextFormField(
-            controller: expiryController,
-            decoration: const InputDecoration(
-              hintText: 'MM/YY',
-              border: OutlineInputBorder(),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(4),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.blue.withOpacity(0.3),
+                  spreadRadius: 1,
+                  blurRadius: 5,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
-            keyboardType: TextInputType.datetime,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter expiry date';
-              }
-              return null;
-            },
+            child: TextFormField(
+              controller: expiryController,
+              decoration: const InputDecoration(
+                hintText: 'MM/YY',
+                border: OutlineInputBorder(),
+                contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+              ),
+              keyboardType: TextInputType.datetime,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter expiry date';
+                }
+                return null;
+              },
+            ),
           ),
         ),
         const SizedBox(width: 10),
         Expanded(
-          child: TextFormField(
-            controller: securityCodeController,
-            decoration: const InputDecoration(
-              hintText: 'CVV',
-              border: OutlineInputBorder(),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(4),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.blue.withOpacity(0.3),
+                  spreadRadius: 1,
+                  blurRadius: 5,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
-            keyboardType: TextInputType.number,
-            obscureText: true,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter CVV';
-              }
-              if (value.length < 3) {
-                return 'Invalid CVV';
-              }
-              return null;
-            },
+            child: TextFormField(
+              controller: securityCodeController,
+              decoration: const InputDecoration(
+                hintText: 'CVV',
+                border: OutlineInputBorder(),
+                contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+              ),
+              keyboardType: TextInputType.number,
+              obscureText: true,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter CVV';
+                }
+                if (value.length < 3) {
+                  return 'Invalid CVV';
+                }
+                return null;
+              },
+            ),
           ),
         ),
       ],
@@ -374,34 +443,64 @@ class _DonationFormState extends State<DonationForm> {
   Widget _buildNameFields() {
     return Column(
       children: [
-        TextFormField(
-          controller: firstNameController,
-          decoration: const InputDecoration(
-            hintText: 'First name',
-            border: OutlineInputBorder(),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(4),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.blue.withOpacity(0.3),
+                spreadRadius: 1,
+                blurRadius: 5,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
-          textCapitalization: TextCapitalization.words,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter first name';
-            }
-            return null;
-          },
+          child: TextFormField(
+            controller: firstNameController,
+            decoration: const InputDecoration(
+              hintText: 'First name',
+              border: OutlineInputBorder(),
+              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+            ),
+            textCapitalization: TextCapitalization.words,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter first name';
+              }
+              return null;
+            },
+          ),
         ),
         const SizedBox(height: 15),
-        TextFormField(
-          controller: lastNameController,
-          decoration: const InputDecoration(
-            hintText: 'Last name',
-            border: OutlineInputBorder(),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(4),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.blue.withOpacity(0.3),
+                spreadRadius: 1,
+                blurRadius: 5,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
-          textCapitalization: TextCapitalization.words,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter last name';
-            }
-            return null;
-          },
+          child: TextFormField(
+            controller: lastNameController,
+            decoration: const InputDecoration(
+              hintText: 'Last name',
+              border: OutlineInputBorder(),
+              // contentPadding: ExtPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+            ),
+            textCapitalization: TextCapitalization.words,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter last name';
+              }
+              return null;
+            },
+          ),
         ),
       ],
     );
@@ -410,40 +509,70 @@ class _DonationFormState extends State<DonationForm> {
   Widget _buildContactFields() {
     return Column(
       children: [
-        TextFormField(
-          controller: phoneController,
-          decoration: const InputDecoration(
-            hintText: 'Phone number',
-            border: OutlineInputBorder(),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(4),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.blue.withOpacity(0.3),
+                spreadRadius: 1,
+                blurRadius: 5,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
-          keyboardType: TextInputType.phone,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter phone number';
-            }
-            if (value.length < 10) {
-              return 'Please enter a valid phone number';
-            }
-            return null;
-          },
+          child: TextFormField(
+            controller: phoneController,
+            decoration: const InputDecoration(
+              hintText: 'Phone number',
+              border: OutlineInputBorder(),
+              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+            ),
+            keyboardType: TextInputType.phone,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter phone number';
+              }
+              if (value.length < 10) {
+                return 'Please enter a valid phone number';
+              }
+              return null;
+            },
+          ),
         ),
         const SizedBox(height: 15),
-        TextFormField(
-          controller: emailController,
-          decoration: const InputDecoration(
-            hintText: 'Email',
-            border: OutlineInputBorder(),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(4),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.blue.withOpacity(0.3),
+                spreadRadius: 1,
+                blurRadius: 5,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
-          keyboardType: TextInputType.emailAddress,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter email';
-            }
-            if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-              return 'Please enter a valid email address';
-            }
-            return null;
-          },
+          child: TextFormField(
+            controller: emailController,
+            decoration: const InputDecoration(
+              hintText: 'Email',
+              border: OutlineInputBorder(),
+              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+            ),
+            keyboardType: TextInputType.emailAddress,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter email';
+              }
+              if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                return 'Please enter a valid email address';
+              }
+              return null;
+            },
+          ),
         ),
       ],
     );
@@ -466,31 +595,44 @@ class _DonationFormState extends State<DonationForm> {
   }
 
   Widget _buildDonateButton() {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: _isLoading ? null : _saveDonationToFirebase,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blue[700],
-          foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blue.withOpacity(0.3),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(0, 2),
           ),
-          padding: const EdgeInsets.symmetric(vertical: 12),
-        ),
-        child: _isLoading
-            ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                  strokeWidth: 2,
+        ],
+      ),
+      child: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: _isLoading ? null : _saveDonationToFirebase,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue[700],
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 12),
+          ),
+          child: _isLoading
+              ? const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                    strokeWidth: 2,
+                  ),
+                )
+              : const Text(
+                  'Donate now',
+                  style: TextStyle(fontSize: 16),
                 ),
-              )
-            : const Text(
-                'Donate now',
-                style: TextStyle(fontSize: 16),
-              ),
+        ),
       ),
     );
   }
